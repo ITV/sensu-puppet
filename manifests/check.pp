@@ -6,6 +6,7 @@
 #
 # [*command*]
 #   String.  The check command to run
+#   Default: undef
 #
 # [*ensure*]
 #   String. Whether the check should be present or not
@@ -105,7 +106,7 @@
 #   Default: undef
 #
 define sensu::check(
-  $command,
+  $command             = undef,
   $ensure              = 'present',
   $type                = undef,
   $handlers            = undef,
