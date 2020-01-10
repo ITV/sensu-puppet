@@ -67,6 +67,11 @@
 #   Default: false.
 #   Valid values: true, false
 #
+# [*handle_silenced*]
+#   Boolean.  If events in the silenced state should be handled.
+#   Default: false.
+#   Valid values: true, false
+#
 define sensu::handler(
   $ensure          = 'present',
   $type            = 'pipe',
@@ -86,9 +91,11 @@ define sensu::handler(
   $subdue          = undef,
   $timeout         = undef,
   $handle_flapping = false,
+  $handle_silenced = false,
 ) {
 
   validate_bool($handle_flapping)
+  validate_bool($handle_silenced)
   validate_re($ensure, ['^present$', '^absent$'] )
   validate_re($type, [ '^pipe$', '^tcp$', '^udp$', '^amqp$', '^set$', '^transport$' ] )
   if $exchange { validate_hash($exchange) }
@@ -172,6 +179,7 @@ define sensu::handler(
     config          => $config,
     timeout         => $timeout,
     handle_flapping => $handle_flapping,
+    handle_silenced => $handle_silenced,
     notify          => $notify_services,
     require         => File['/etc/sensu/conf.d/handlers'],
   }
